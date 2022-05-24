@@ -4,6 +4,7 @@ metadata:
   labels:
     app: dummy-ingest-api
   name: dummy-ingest-api
+  namespace: devops
 spec:
   ports:
   - port: 8080 

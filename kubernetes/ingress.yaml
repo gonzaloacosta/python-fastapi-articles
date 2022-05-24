@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: default
+  name: dummy-ingest-api
+  namespace: devops
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: dummy-ingest-api
+          servicePort: 8080
+        path: /articles
+        pathType: Prefix
