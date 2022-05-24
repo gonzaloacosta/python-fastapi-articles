@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dummy-ingest-api
+  name: dummy-ingest-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dummy-ingest-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: dummy-ingest-api
+    spec:
+      containers:
+      - image: gonzaloacosta/python-fastapi-articles:0.0.1
+        name: fastapi-articles
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: 1
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 80

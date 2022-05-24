@@ -1,0 +1,14 @@
+apiVersion: extension/v1betav1
+kind: Ingress
+metadata:
+  name: dummy-ingest-api
+  annotation:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /articles
+        backend:
+          serviceName: dummy-ingest-api
+          servicePort: 8080
