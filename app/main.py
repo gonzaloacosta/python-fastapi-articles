@@ -45,7 +45,7 @@ def root():
     return response
 
 
-@app.post("/articles",
+@app.post("/article",
           status_code=status.HTTP_201_CREATED,
           response_model=schemas.Articles)
 def create_articles(article: schemas.ArticlesCreate):
@@ -68,7 +68,7 @@ def create_articles(article: schemas.ArticlesCreate):
     return article_db
 
 
-@app.get("/articles/{id}",
+@app.get("/article/{id}",
          response_model=schemas.Articles, status_code=status.HTTP_200_OK)
 def read_article(id: int):
     """
@@ -88,7 +88,7 @@ def read_article(id: int):
     return article
 
 
-@app.get("/articles/{id}",
+@app.get("/article/{id}",
          response_model=schemas.Articles,
          status_code=status.HTTP_201_CREATED)
 def update_article(id: int, username: str, text: str):
@@ -115,7 +115,7 @@ def update_article(id: int, username: str, text: str):
     return article
 
 
-@app.delete("/articles/{id}",
+@app.delete("/article/{id}",
             status_code=status.HTTP_201_CREATED,
             response_model=schemas.Articles)
 def delete_articles(id: int):

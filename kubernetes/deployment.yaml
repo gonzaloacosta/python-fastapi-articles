@@ -17,7 +17,7 @@ spec:
         app: dummy-ingest-api
     spec:
       containers:
-      - image: gonzaloacosta/python-fastapi-articles:0.0.1
+      - image: gonzaloacosta/python-fastapi-articles:0.0.2
         name: fastapi-articles
         resources:
           limits:
