@@ -6,7 +6,7 @@
 """
 __author__ = "Gonzalo Acosta"
 __email__ = "gonzaloacostapeiro@gmail.com"
-__version__ = "0.0.1"
+__version__ = "0.0.5"
 
 from fastapi import FastAPI, status, HTTPException, Response
 from database import Base, engine
@@ -40,7 +40,7 @@ def root(response: Response):
     Root base path
     """
     start_time = time.time()
-    message = "Hello DevOps to Dummy API REST"
+    message = "Hello DevOps to Dummy API REST version {}".format(__version__)
     response_content = {
         "message": message
     }
