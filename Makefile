@@ -5,7 +5,7 @@ HOST_PORT 		:= 8080
 HOST_IP			:= localhost
 #HOST_IP			:= gap-dev-nlb-4ce75e8689217918.elb.us-east-1.amazonaws.com
 CONTAINER_PORT	:= 80
-VERSION			:= 0.0.5
+VERSION			:= 0.0.6
 
 venv:
 	@python3 -m venv venv
@@ -41,6 +41,10 @@ docker/image:
 	@docker image -f $(REPOSITORY)/$(IMAGE):$(VERSION)
 
 docker/push:
+	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
+
+docker/bump:
+	@docker build -t $(REPOSITORY)/$(IMAGE):$(VERSION) .
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
 
 docker/run:

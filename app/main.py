@@ -6,7 +6,7 @@
 """
 __author__ = "Gonzalo Acosta"
 __email__ = "gonzaloacostapeiro@gmail.com"
-__version__ = "0.0.5"
+__version__ = "0.0.6"
 
 from fastapi import FastAPI, status, HTTPException, Response
 from database import Base, engine
