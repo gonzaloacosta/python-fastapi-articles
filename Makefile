@@ -1,10 +1,11 @@
 USERNAME		:= gonzalo
 REPOSITORY  	:= gonzaloacosta
 IMAGE			:= python-fastapi-articles
-HOST_PORT 		:= 40792
+HOST_PORT 		:= 8080
 HOST_IP			:= localhost
+#HOST_IP			:= gap-dev-nlb-4ce75e8689217918.elb.us-east-1.amazonaws.com
 CONTAINER_PORT	:= 80
-VERSION			:= 0.0.2
+VERSION			:= 0.0.4
 
 venv:
 	@python3 -m venv venv
@@ -18,14 +19,16 @@ run:
 
 test:
 	@echo "GET /"
-	@curl http://$(HOST_IP):$(HOST_PORT)
-	@echo ""
+	@curl -vs http://$(HOST_IP):$(HOST_PORT)
 	@echo ""
 	@echo "POST /article"
-	@curl -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d '{"username":"gonzalo","text":"Content-Type of your request to application/json and pass the "}' | jq . 
+	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d '{"username":"someone","text":"to something else, butterfly"}' | jq .
 	@echo ""
 	@echo "GET /articles"
-	@curl -X GET http://$(HOST_IP):$(HOST_PORT)/articles | jq . 
+	@curl -vs -X GET http://$(HOST_IP):$(HOST_PORT)/articles | jq .
+	@echo ""
+	@echo "GET /1"
+	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/1 | jq .
 	@echo ""
 
 docs:

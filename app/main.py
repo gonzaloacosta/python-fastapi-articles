@@ -8,15 +8,17 @@ __author__ = "Gonzalo Acosta"
 __email__ = "gonzaloacostapeiro@gmail.com"
 __version__ = "0.0.1"
 
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, status, HTTPException, Response
+from fastapi.encoders import jsonable_encoder
 from database import Base, engine
 from sqlalchemy.orm import Session
 from typing import List
 
 import models
 import schemas
-# import os
+#import os
 import datetime
+import time
 
 
 def get_date():
@@ -34,36 +36,42 @@ app = FastAPI()
 
 
 @app.get("/")
-def root():
+def root(response: Response):
     """
     Root base path
     """
-    message = "Hello MLOps to demo ingest articles"
-    response = {
+    start_time = time.time()
+    message = "Hello DevOps to Dummy API REST"
+    response_content = {
         "message": message
     }
-    return response
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
+    return response_content
 
 
 @app.post("/article",
           status_code=status.HTTP_201_CREATED,
           response_model=schemas.Articles)
-def create_articles(article: schemas.ArticlesCreate):
+def create_articles(
+        article: schemas.ArticlesCreate, response: Response):
     """
     Create a new article to enrich
     """
+    start_time = time.time()
 
     session = Session(bind=engine, expire_on_commit=False)
     article_db = models.Articles(
         text=article.text,
         username=article.username
     )
-
     session.add(article_db)
     session.commit()
     session.refresh(article_db)
-
     session.close()
+
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time)
 
     return article_db
 
