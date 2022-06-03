@@ -9,7 +9,6 @@ __email__ = "gonzaloacostapeiro@gmail.com"
 __version__ = "0.0.1"
 
 from fastapi import FastAPI, status, HTTPException, Response
-from fastapi.encoders import jsonable_encoder
 from database import Base, engine
 from sqlalchemy.orm import Session
 from typing import List
@@ -46,7 +45,7 @@ def root(response: Response):
         "message": message
     }
     process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
+    response.headers["x-process-time"] = str(process_time)
     return response_content
 
 
@@ -71,18 +70,19 @@ def create_articles(
     session.close()
 
     process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
+    response.headers["x-process-time"] = str(process_time)
 
     return article_db
 
 
 @app.get("/article/{id}",
          response_model=schemas.Articles, status_code=status.HTTP_200_OK)
-def read_article(id: int):
+def read_article(id: int, response: Response):
     """
     Read a raw article
     """
 
+    start_time = time.time()
     session = Session(bind=engine, expire_on_commit=False)
     article = session.query(models.Articles).get(id)
     session.close()
@@ -93,17 +93,23 @@ def read_article(id: int):
             detail=f"article item with id {id} not found"
         )
 
+    process_time = time.time() - start_time
+    response.headers["x-process-time"] = str(process_time)
     return article
 
 
 @app.get("/article/{id}",
          response_model=schemas.Articles,
          status_code=status.HTTP_201_CREATED)
-def update_article(id: int, username: str, text: str):
+def update_article(id: int,
+                   username: str,
+                   text: str,
+                   response: Response):
     """
     Update a raw article
     """
 
+    start_time = time.time()
     session = Session(bind=engine, expire_on_commit=False)
     article = session.query(models.Articles).get(id)
 
@@ -120,17 +126,20 @@ def update_article(id: int, username: str, text: str):
             detail=f"article item with id {id} not found"
         )
 
+    process_time = time.time() - start_time
+    response.headers["x-process-time"] = str(process_time)
     return article
 
 
 @app.delete("/article/{id}",
             status_code=status.HTTP_201_CREATED,
             response_model=schemas.Articles)
-def delete_articles(id: int):
+def delete_articles(id: int, response: Response):
     """
     Delete a raw article
     """
 
+    start_time = time.time()
     session = Session(bind=engine, expire_on_commit=False)
     article = session.query(models.Articles).get(id)
 
@@ -146,17 +155,20 @@ def delete_articles(id: int):
             detail=f"articles item with id {id} not found"
         )
 
+    process_time = time.time() - start_time
+    response.headers["x-process-time"] = str(process_time)
     return article
 
 
 @app.get("/articles",
          status_code=status.HTTP_201_CREATED,
          response_model=List[schemas.Articles])
-def read_articles_list():
+def read_articles_list(response: Response):
     """
     Read all articles stored in db
     """
 
+    start_time = time.time()
     session = Session(bind=engine, expire_on_commit=False)
     articles_list = session.query(models.Articles).all()
 
@@ -167,5 +179,8 @@ def read_articles_list():
         )
 
     session.close()
+
+    process_time = time.time() - start_time
+    response.headers["x-process-iime"] = str(process_time)
 
     return articles_list
