@@ -65,8 +65,8 @@ d/bump:
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
 
 d/rebuild:
-	@docker stop python-fastapi-articles
-	@docker rm python-fastapi-articles
+	@docker stop $(USERNAME)-$(IMAGE)
+	@docker rm $(USERNAME)-$(IMAGE)
 	@docker run --rm -d --name $(USERNAME)-$(IMAGE) -p $(HOST_PORT):$(CONTAINER_PORT) $(REPOSITORY)/$(IMAGE):$(VERSION)
 
 d/run:
