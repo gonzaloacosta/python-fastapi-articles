@@ -34,9 +34,19 @@ test:
 	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/3 | jq .
 	@echo ""
 
+g/checkout:
+	@git checkout $(BRANCH)
+
+g/commit:
+	@git commit -am "bump $(VERSION)"
+
 g/push:
 	@git commit -am "bump $(VERSION)"
 	@git push -u origin $(BRANCH)
+
+g/pull:
+	@git fetch --force
+	@git pull
 
 docs:
 	@open http://$(HOST_IP):$(HOST_PORT)/docs
