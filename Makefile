@@ -5,15 +5,16 @@ HOST_PORT 		:= 8080
 HOST_IP			:= localhost
 CONTAINER_PORT	:= 80
 VERSION			:= 0.0.8
+BRANCH			:= master
 
-venv:
+py/venv:
 	@python3 -m venv venv
 	@pip3 install -r requirements.txt
 
-activate:
+py/activate:
 	@source venv/bin/activate
 
-run:
+py/run:
 	@cd app && uvicorn main:app --host $(HOST_IP) --port $(HOST_PORT) --reload
 
 test:
@@ -33,24 +34,28 @@ test:
 	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/3 | jq .
 	@echo ""
 
+g/push:
+	@git commit -am "bump $(VERSION)"
+	@git push -u origin $(BRANCH)
+
 docs:
 	@open http://$(HOST_IP):$(HOST_PORT)/docs
 
-docker/build:
+d/build:
 	@docker build -t $(REPOSITORY)/$(IMAGE):$(VERSION) .
 
-docker/image:
+d/image:
 	@docker image -f $(REPOSITORY)/$(IMAGE):$(VERSION)
 
-docker/push:
+d/push:
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
 
-docker/bump:
+d/bump:
 	@docker build -t $(REPOSITORY)/$(IMAGE):$(VERSION) .
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
 
-docker/run:
+d/run:
 	@docker run --rm -d --name $(USERNAME)-$(IMAGE) -p $(HOST_PORT):$(CONTAINER_PORT) $(REPOSITORY)/$(IMAGE):$(VERSION)
 
-docker/status:
+d/status:
 	@docker ps -f name=$(USERNAME)-$(IMAGE)
