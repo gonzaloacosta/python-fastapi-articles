@@ -6,7 +6,7 @@
 """
 __author__ = "Gonzalo Acosta"
 __email__ = "gonzaloacostapeiro@gmail.com"
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 
 from fastapi import FastAPI, status, HTTPException, Response
 from database import Base, engine
@@ -15,9 +15,9 @@ from typing import List
 
 import models
 import schemas
-#import os
 import datetime
 import time
+from time import sleep
 
 
 def get_date():
@@ -67,13 +67,17 @@ def create_articles(
         bind=engine,
         expire_on_commit=False)
 
+    if article.wait_time > 0:
+        sleep(article.wait_time)
+
     article_db = models.Articles(
         text=article.text,
         username=article.username,
         appname=article.appname,
         request_id=article.request_id,
+        wait_time=article.wait_time,
         stamp_created=get_date(),
-        stamp_updated=get_date()
+        stamp_updated=get_date(),
     )
 
     session.add(article_db)

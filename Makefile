@@ -5,7 +5,7 @@ HOST_PORT 		:= 8080
 HOST_IP			:= localhost
 #HOST_IP			:= gap-dev-nlb-4ce75e8689217918.elb.us-east-1.amazonaws.com
 CONTAINER_PORT	:= 80
-VERSION			:= 0.0.7
+VERSION			:= 0.0.8
 
 venv:
 	@python3 -m venv venv
@@ -19,16 +19,19 @@ run:
 
 test:
 	@echo "$(shell date) - GET /"
-	@curl -vs http://$(HOST_IP):$(HOST_PORT)
+	@curl -s http://$(HOST_IP):$(HOST_PORT) | jq .
 	@echo ""
 	@echo "$(shell date) - POST /article"
-	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note $(shell date ): to something else, butterfly\", \"appname\": \"local-test-app\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\"}" | jq .
+	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note $(shell date ): to something else, butterfly\", \"appname\": \"local-test-app\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\", \"wait_time\": \"3\"}" | jq .
 	@echo ""
 	@echo "GET /articles"
 	@curl -vs -X GET http://$(HOST_IP):$(HOST_PORT)/articles | jq .
 	@echo ""
 	@echo "GET /1"
 	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/1 | jq .
+	@echo ""
+	@echo "GET /3"
+	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/3 | jq .
 	@echo ""
 
 docs:

@@ -1,0 +1,2 @@
+#curl -s -X POST http://localhost:8080/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note `date`: to something else, butterfly\", \"appname\": \"local-test-app\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\", \"wait_time\": \"1\"}" | jq .
+curl -s -X POST http://localhost:8080/article -H 'Content-Type: application/json' -d '{"username":"someone","text":"Daily note: to something else, butterfly", "appname": "local-test-app", "request_id": "ac832ad4-c9c9-4eda-82ac-651233d23f2b", "wait_time": "1"}' | jq .

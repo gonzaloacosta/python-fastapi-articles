@@ -21,5 +21,6 @@ class Articles(Base):
     text = Column(String(500))
     appname = Column(String(64))
     request_id = Column(String(64))
+    wait_time = Column(Integer, default=0)
     stamp_created = Column(DateTime, default=get_date())
     stamp_updated = Column(DateTime, default=get_date())

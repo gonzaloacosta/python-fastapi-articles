@@ -10,6 +10,7 @@ class ArticlesCreate(BaseModel):
     text: str
     appname: str
     request_id: str
+    wait_time: int
 
 
 class Articles(BaseModel):
@@ -21,6 +22,7 @@ class Articles(BaseModel):
     stamp_updated: datetime
     appname: str
     request_id: str
+    wait_time: int
     username: str
     text: str
 
