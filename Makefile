@@ -64,8 +64,16 @@ d/bump:
 	@docker build -t $(REPOSITORY)/$(IMAGE):$(VERSION) .
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
 
+d/rebuild:
+	@docker stop python-fastapi-articles
+	@docker rm python-fastapi-articles
+	@docker run --rm -d --name $(USERNAME)-$(IMAGE) -p $(HOST_PORT):$(CONTAINER_PORT) $(REPOSITORY)/$(IMAGE):$(VERSION)
+
 d/run:
 	@docker run --rm -d --name $(USERNAME)-$(IMAGE) -p $(HOST_PORT):$(CONTAINER_PORT) $(REPOSITORY)/$(IMAGE):$(VERSION)
 
 d/status:
 	@docker ps -f name=$(USERNAME)-$(IMAGE)
+
+k/apply:
+	@kubectl apply -f kubernetes/*.yaml
