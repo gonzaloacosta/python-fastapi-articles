@@ -3,7 +3,6 @@ REPOSITORY  	:= gonzaloacosta
 IMAGE			:= python-fastapi-articles
 HOST_PORT 		:= 8080
 HOST_IP			:= localhost
-#HOST_IP			:= gap-dev-nlb-4ce75e8689217918.elb.us-east-1.amazonaws.com
 CONTAINER_PORT	:= 80
 VERSION			:= 0.0.8
 
