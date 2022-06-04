@@ -62,7 +62,9 @@ d/push:
 
 d/bump:
 	@docker build -t $(REPOSITORY)/$(IMAGE):$(VERSION) .
+	@docker tag $(REPOSITORY)/$(IMAGE):$(VERSION) $(REPOSITORY)/$(IMAGE):latest
 	@docker push $(REPOSITORY)/$(IMAGE):$(VERSION)
+	@docker push $(REPOSITORY)/$(IMAGE):latest
 
 d/rebuild:
 	@docker stop $(USERNAME)-$(IMAGE)
