@@ -18,11 +18,11 @@ run:
 	@cd app && uvicorn main:app --host $(HOST_IP) --port $(HOST_PORT) --reload
 
 test:
-	@echo "GET /"
+	@echo "$(shell date) - GET /"
 	@curl -vs http://$(HOST_IP):$(HOST_PORT)
 	@echo ""
-	@echo "POST /article"
-	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d '{"username":"someone","text":"to something else, butterfly"}' | jq .
+	@echo "$(shell date) - POST /article"
+	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note $(shell date ): to something else, butterfly\", \"appname\": \"local-test-app\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\"}" | jq .
 	@echo ""
 	@echo "GET /articles"
 	@curl -vs -X GET http://$(HOST_IP):$(HOST_PORT)/articles | jq .

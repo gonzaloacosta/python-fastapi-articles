@@ -19,5 +19,7 @@ class Articles(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(64))
     text = Column(String(500))
+    appname = Column(String(64))
+    request_id = Column(String(64))
     stamp_created = Column(DateTime, default=get_date())
     stamp_updated = Column(DateTime, default=get_date())

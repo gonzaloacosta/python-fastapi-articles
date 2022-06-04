@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class ArticlesCreate(BaseModel):
@@ -7,6 +8,8 @@ class ArticlesCreate(BaseModel):
     """
     username: str
     text: str
+    appname: str
+    request_id: str
 
 
 class Articles(BaseModel):
@@ -14,6 +17,10 @@ class Articles(BaseModel):
     Complete Article Schema (Pydantic Model)
     """
     id: int
+    stamp_created: datetime
+    stamp_updated: datetime
+    appname: str
+    request_id: str
     username: str
     text: str
 
