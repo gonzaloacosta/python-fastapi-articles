@@ -8,9 +8,9 @@ class ArticlesCreate(BaseModel):
     """
     username: str
     text: str
-    appname: str
+    appname: str = "local-app"
     request_id: str
-    wait_time: int
+    wait_time: int = 0
 
 
 class Articles(BaseModel):
@@ -20,9 +20,9 @@ class Articles(BaseModel):
     id: int
     stamp_created: datetime
     stamp_updated: datetime
-    appname: str
+    appname: str = "local-app"
     request_id: str
-    wait_time: int
+    wait_time: int = 0
     username: str
     text: str
 

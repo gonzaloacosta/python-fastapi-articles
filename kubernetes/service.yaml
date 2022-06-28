@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: dummy-ingest-api
-  name: dummy-ingest-api
+    app: articles
+  name: articles
   namespace: devops
 spec:
   ports:
@@ -11,5 +11,5 @@ spec:
     protocol: TCP
     targetPort: 80
   selector:
-    app: dummy-ingest-api
+    app: articles
   type: ClusterIP

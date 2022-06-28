@@ -1,11 +1,11 @@
-USERNAME		:= gonzalo
-REPOSITORY  	:= gonzaloacosta
-IMAGE			:= python-fastapi-articles
-HOST_PORT 		:= 8080
-HOST_IP			:= localhost
+USERNAME				:= gonzalo
+REPOSITORY  		:= gonzaloacosta
+IMAGE						:= python-fastapi-articles
+HOST_PORT 			:= 9081
+HOST_IP					:= articles.example.com 
 CONTAINER_PORT	:= 80
-VERSION			:= 0.0.8
-BRANCH			:= master
+VERSION					:= 0.0.10
+BRANCH					:= master
 
 py/venv:
 	@python3 -m venv venv
@@ -19,20 +19,20 @@ py/run:
 
 test:
 	@echo "$(shell date) - GET /"
-	@curl -s http://$(HOST_IP):$(HOST_PORT) | jq .
+	@curl -kv https://$(HOST_IP):$(HOST_PORT) | jq .
 	@echo ""
 	@echo "$(shell date) - POST /article"
-	@curl -vs -X POST http://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note $(shell date ): to something else, butterfly\", \"appname\": \"local-test-app\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\", \"wait_time\": \"3\"}" | jq .
-	@echo ""
-	@echo "GET /articles"
-	@curl -vs -X GET http://$(HOST_IP):$(HOST_PORT)/articles | jq .
-	@echo ""
-	@echo "GET /1"
-	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/1 | jq .
-	@echo ""
-	@echo "GET /3"
-	@curl -vs http://$(HOST_IP):$(HOST_PORT)/article/3 | jq .
-	@echo ""
+	@curl -kv -X POST https://$(HOST_IP):$(HOST_PORT)/article -H 'Content-Type: application/json' -d "{\"username\":\"someone\",\"text\":\"Daily note $(shell date ): to something else, butterfly\", \"appname\": \"local-test-app2\", \"request_id\": \"ac832ad4-c9c9-4eda-82ac-651233d23f2b\", \"wait_time\": \"0\"}" | jq .
+#	@echo ""
+#	@echo "GET /articles"
+#	@curl -s -X GET https://$(HOST_IP):$(HOST_PORT)/articles | jq .
+#	@echo ""
+#	@echo "GET /1"
+#	@curl -s https://$(HOST_IP):$(HOST_PORT)/article/1 | jq .
+#	@echo ""
+#	@echo "GET /3"
+#	@curl -s http://$(HOST_IP):$(HOST_PORT)/article/3 | jq .
+#	@echo ""
 
 g/checkout:
 	@git checkout $(BRANCH)

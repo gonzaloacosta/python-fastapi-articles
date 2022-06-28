@@ -14,3 +14,5 @@ curl -s http://<ingress_url>/articles/18 | jq .
   "id": 18,
   "username": "gonza",
   "text": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa"
+}
+```

@@ -8,7 +8,7 @@ __author__ = "Gonzalo Acosta"
 __email__ = "gonzaloacostapeiro@gmail.com"
 __version__ = "0.0.8"
 
-from fastapi import FastAPI, status, HTTPException, Response
+from fastapi import FastAPI, status, HTTPException, Response, Request, Query
 from database import Base, engine
 from sqlalchemy.orm import Session
 from typing import List
@@ -57,7 +57,10 @@ def root(response: Response):
           response_model=schemas.Articles)
 def create_articles(
         article: schemas.ArticlesCreate,
-        response: Response):
+        request: Request,
+        response: Response,
+        appname: str = "app-name"
+        ):
     """
     Create a new article to enrich
     """
@@ -67,13 +70,23 @@ def create_articles(
         bind=engine,
         expire_on_commit=False)
 
+    print("request.headers: {}".format(request.headers))
+    print("pre appname: {}".format(appname))
+
     if article.wait_time > 0:
         sleep(article.wait_time)
+
+    if 'appname' in request.headers:
+        # appname in header
+        appname = request.headers['appname']
+    elif article.appname and appname == "local-app":
+        # appname in body
+        appname = article.appname
 
     article_db = models.Articles(
         text=article.text,
         username=article.username,
-        appname=article.appname,
+        appname=appname,
         request_id=article.request_id,
         wait_time=article.wait_time,
         stamp_created=get_date(),
@@ -94,11 +107,19 @@ def create_articles(
 @app.get("/article/{id}",
          response_model=schemas.Articles,
          status_code=status.HTTP_200_OK)
-def read_article(id: int, response: Response):
+def read_article(
+        id: int, 
+        request: Request,
+        response: Response
+    ):
     """
     Read a raw article
     """
     start_time = time.time()
+
+    # work here
+
+    print("request.headers: {}".format(request.headers))
 
     session = Session(bind=engine, expire_on_commit=False)
     article = session.query(models.Articles).get(id)
@@ -112,6 +133,9 @@ def read_article(id: int, response: Response):
 
     process_time = time.time() - start_time
     response.headers["x-process-time"] = str(process_time)
+
+    print("response.headers: {}".format(response.headers))
+
     return article
 
 
@@ -123,11 +147,16 @@ def update_article(id: int,
                    text: str,
                    appname: str,
                    request_id: str,
-                   response: Response):
+                   request: Request,
+                   response: Response
+                   ):
     """
     Update a raw article
     """
+
     start_time = time.time()
+
+    print("request.headers: {}".format(request.headers))
 
     session = Session(bind=engine, expire_on_commit=False)
     article = session.query(models.Articles).get(id)
@@ -150,6 +179,8 @@ def update_article(id: int,
 
     process_time = time.time() - start_time
     response.headers["x-process-time"] = str(process_time)
+
+    print("response.headers: {}".format(response.headers))
     return article
 
 
@@ -179,7 +210,6 @@ def delete_articles(id: int, response: Response):
     process_time = time.time() - start_time
     response.headers["x-process-time"] = str(process_time)
     return article
-
 
 @app.get("/articles",
          status_code=status.HTTP_201_CREATED,
